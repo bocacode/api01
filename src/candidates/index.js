@@ -37,10 +37,18 @@ exports.getCandidates = (request, response) => {
 }
 
 exports.getSingleCandidate = (request, response) => {
-  const { favoriteColor } = request.params
+  const { candidateId } = request.params
+  if(candidateId < 0 || candidateId >= candidates.length) {
+    response.status(403).send({
+      status: 403,
+      message: 'Invalid candidate ID',
+      data: [],
+    })
+  }
+  const myCandidate = candidates[candidateId]
   response.status(200).json({
     status: 200,
-    data: candidates.filter(candidate => candidate.favoriteColor === favoriteColor),
+    data: myCandidate,
     message: 'Records read successfully'
   })
 }
